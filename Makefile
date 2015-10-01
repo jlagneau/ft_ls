@@ -30,7 +30,7 @@ SRCS_PATH = src/
 HEAD_PATH = include/
 
 CC        = clang
-CFLAGS    = -I$(HEAD_PATH) -I$(LIB)include -Wall -Wextra -Werror
+CFLAGS    = -I$(HEAD_PATH) -I$(LIB)$(HEAD_PATH) -Wall -Wextra -Werror
 LDFLAGS   = -L$(LIB)
 
 AR        = ar
@@ -40,11 +40,12 @@ RM        = rm
 RMFLAGS   = -rf
 
 # Sources files (find src -type f | tr "\n" " " to get the list).
-SRCS      = src/main.c
+SRCS      := $(shell find src -type f | tr "\n" " ")
 OBJS      = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=.o)))
+DEB_OBJS  = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=_debug.o)))
 
 # Print informations about the library
-$(info :: Test parser: $(NAME))
+$(info :: Project: $(NAME))
 ifneq (, $(strip $(ISGIT)))
 ifneq (, $(strip $(HASTAGS)))
     $(info :: Version : $(VER))
@@ -56,14 +57,12 @@ endif
 $(NAME): CFLAGS += -O3
 $(NAME): LDFLAGS += -lft
 $(NAME): $(OBJS)
-	printf "    [\033[32mDONE\033[0m]\n"
 	make -C $(LIB)
 	printf "[\033[36m%20s\033[0m] Linking and indexing" $(NAME)
 	$(CC) $^ $(LDFLAGS) -o $@
 	printf " [\033[32mDONE\033[0m]\n"
 
-$(DEB_NAME): $(OBJS)
-	printf "    [\033[32mDONE\033[0m]\n"
+$(DEB_NAME): $(DEB_OBJS)
 	make -C $(LIB) debug
 	printf "[\033[36m%20s\033[0m] Linking and indexing" $(DEB_NAME)
 	$(CC) $^ $(LDFLAGS) -o $@
@@ -73,12 +72,21 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c
 	if [ ! -d $(OBJS_PATH) ]; then \
 	mkdir -p $(OBJS_PATH); \
 	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
+	printf "    [\033[32mDONE\033[0m]\n"; \
+	fi;
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS_PATH)%_debug.o: $(SRCS_PATH)%.c
+	if [ ! -d $(OBJS_PATH) ]; then \
+	mkdir -p $(OBJS_PATH); \
+	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
+	printf "    [\033[32mDONE\033[0m]\n"; \
 	fi;
 	$(CC) $(CFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g3
 debug: LDFLAGS += -lft_debug
-debug: clean $(DEB_NAME)
+debug: $(DEB_NAME)
 
 redebug: fclean debug
 

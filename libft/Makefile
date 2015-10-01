@@ -54,18 +54,17 @@ SRCS      = src/ft_putstr_fd.c src/ft_isalpha.c src/ft_memcpy.c \
 			src/ft_strnstr.c src/ft_strclr.c src/ft_strnequ.c \
 			src/ft_isascii.c src/ft_stralen.c
 OBJS      = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=.o)))
+DEB_OBJS  = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=_debug.o)))
 
 # Rules
 $(NAME): CFLAGS += -O3
 $(NAME): $(OBJS)
-	printf "    [\033[32mDONE\033[0m]\n"
 	printf "[\033[36m%20s\033[0m] Linking and indexing" $(NAME)
 	$(AR) $(ARFLAGS) $@ $^
 	ranlib $@
 	printf " [\033[32mDONE\033[0m]\n"
 
-$(DEB_NAME): $(OBJS)
-	printf "    [\033[32mDONE\033[0m]\n"
+$(DEB_NAME): $(DEB_OBJS)
 	printf "[\033[36m%20s\033[0m] Linking and indexing" $(NAME)
 	$(AR) $(ARFLAGS) $@ $^
 	ranlib $@
@@ -75,11 +74,20 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c
 	if [ ! -d $(OBJS_PATH) ]; then \
 	mkdir -p $(OBJS_PATH); \
 	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
+	printf "    [\033[32mDONE\033[0m]\n"; \
+	fi;
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS_PATH)%_debug.o: $(SRCS_PATH)%.c
+	if [ ! -d $(OBJS_PATH) ]; then \
+	mkdir -p $(OBJS_PATH); \
+	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
+	printf "    [\033[32mDONE\033[0m]\n"; \
 	fi;
 	$(CC) $(CFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g3
-debug: clean $(DEB_NAME)
+debug: $(DEB_NAME)
 
 redebug: fclean debug
 

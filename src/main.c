@@ -1,7 +1,7 @@
-#include <libft.h>
+#include "ft_ls.h"
 
-int		main(void)
+int		main(int ac, char **av)
 {
-	ft_putendl("coucou");
+	init(ac, av);
 	return (0);
 }
