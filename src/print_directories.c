@@ -15,11 +15,11 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-static void		print_directory_name(t_list *dir)
+static void		print_directory_name(t_list *dir, int c)
 {
 	static int	i = 0;
 
-	if (i == 0)
+	if (i == 0 || c < 2)
 		i++;
 	else
 		ft_putstr("\n");
@@ -48,7 +48,7 @@ void			print_directories(t_list *dir, int c, int options)
 			if (!content)
 				print_mem_error(errno);
 			if (c > 1 || options & RECURSIVE_OPTION_MASK)
-				print_directory_name(i);
+				print_directory_name(i, c);
 			if (options & LONG_OPTION_MASK)
 				print_total(content);
 			print(content, options);
