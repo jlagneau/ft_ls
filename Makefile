@@ -40,7 +40,14 @@ RM        = rm
 RMFLAGS   = -rf
 
 # Sources files
-SRCS      := $(shell find src -type f | tr "\n" " ")
+SRCS      = src/print_link_dest.c src/padding.c src/error.c src/print_link.c \
+			src/get_options.c src/get_files.c src/get_directories.c \
+			src/get_directory_content.c src/print_size.c src/print_mode.c \
+			src/print_total.c src/main.c src/print_date.c src/set_file_path.c \
+			src/free_file.c src/print_simple.c src/print_user_group.c \
+			src/print_long.c src/init.c src/sort.c src/print_recursive.c \
+			src/custom.c src/print_directories.c src/set_file.c src/print.c \
+			src/get_params.c src/print_name.c
 OBJS      = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=.o)))
 DEB_OBJS  = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=_debug.o)))
 

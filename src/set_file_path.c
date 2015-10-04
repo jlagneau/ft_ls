@@ -26,8 +26,10 @@ char					*set_file_path(char *name, char *path)
 		return (ft_strdup(name));
 	if (!ft_strcmp(path, "."))
 		return (ft_strdup(name));
+	if (!ft_strcmp(path, "/"))
+		return (ft_strjoin("/", name));
 	if (!(tmp = ft_strdup(path)))
-		print_error(errno);
+		print_mem_error(errno);
 	if (tmp[ft_strlen(tmp)] != '/')
 	{
 		tmp2 = ft_strjoin(tmp, "/");

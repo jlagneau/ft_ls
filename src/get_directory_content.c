@@ -28,21 +28,25 @@ void			get_directory_content(t_list *dir, t_list **files, int options)
 {
 	DIR			*pDir;
 	t_dir		*pDirent;
+	char		*tmp;
 
 	pDir = NULL;
 	pDirent = NULL;
-	if ((pDir = opendir(NAME(dir))))
+	if (!(tmp = set_file_path(NAME(dir), PATH(dir))))
+		print_mem_error(errno);
+	if ((pDir = opendir(tmp)))
 	{
 		while ((pDirent = readdir(pDir)))
 		{
 			if (pDirent)
-				is_hidden(pDirent->d_name, files, NAME(dir), options);
+				is_hidden(pDirent->d_name, files, tmp, options);
 			else
-				print_error(errno);
+				print_mem_error(errno);
 		}
+		ft_strdel(&tmp);
 		sort(*files, options);
 		closedir(pDir);
 	}
 	else
-		print_error(errno);
+		print_opendir_error(tmp, errno);
 }

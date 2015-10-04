@@ -22,9 +22,25 @@ void	print_stat_error(char *filename, int err)
 	ft_putendl_fd(strerror(err), 2);
 }
 
-void	print_error(int err)
+void	print_opendir_error(char *directory, int err)
 {
-	ft_putstr_fd("ft_ls: ", 2);
+	ft_putstr_fd("ft_ls: cannot open directory ", 2);
+	ft_putstr_fd(directory, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(err), 2);
+}
+
+void	print_link_error(char *link, int err)
+{
+	ft_putstr_fd("ft_ls: cannot read symbolic link ", 2);
+	ft_putstr_fd(link, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(err), 2);
+}
+
+void	print_mem_error(int err)
+{
+	ft_putstr_fd("ft_ls: allocation error: ", 2);
 	ft_putendl_fd(strerror(err), 2);
 	exit(1);
 }

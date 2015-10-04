@@ -12,9 +12,27 @@
 
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <errno.h>
 #include <libft.h>
 #include "ft_ls.h"
+
+static void				set_link_dest(t_file *file_tmp)
+{
+	char	*linkname;
+	char	*file_path;
+	int		r;
+
+	linkname = NULL;
+	if (!(linkname = ft_strnew(file_tmp->stat->st_size)))
+		print_mem_error(errno);
+	file_path = set_file_path(file_tmp->name, file_tmp->path);
+	if ((r = readlink(file_path, linkname, file_tmp->stat->st_size + 1)) == -1)
+		print_link_error(file_path, errno);
+	ft_strdel(&file_path);
+	linkname[r] = '\0';
+	file_tmp->link_dest = linkname;
+}
 
 static void				set_path(char *filename, char *path, t_file *file_tmp)
 {
@@ -36,7 +54,7 @@ static int 				set_stat(t_file *file)
 
 	stat = NULL;
 	if (!(stat = (t_stat*)ft_memalloc(sizeof(t_stat))))
-		print_error(errno);
+		print_mem_error(errno);
 	if (lstat((tmp = set_file_path(file->name, file->path)), stat) == -1)
 	{
 		ft_putendl_fd(tmp, 2);
@@ -54,7 +72,7 @@ static void				set_name(char *filename, t_file *file_tmp)
 
 	tmp = NULL;
 	if (!(tmp = ft_strnew(ft_strlen(filename))))
-		print_error(errno);
+		print_mem_error(errno);
 	ft_strcpy(tmp, filename);
 	file_tmp->name = tmp;
 }
@@ -66,7 +84,7 @@ void					set_file(char *filename, char *path, t_list **files)
 
 	file_tmp = NULL;
 	if (!(file_tmp = (t_file*)ft_memalloc(sizeof(t_file))))
-		print_error(errno);
+		print_mem_error(errno);
 	set_path(filename, path, file_tmp);
 	set_name(filename, file_tmp);
 	if (set_stat(file_tmp))
@@ -75,6 +93,8 @@ void					set_file(char *filename, char *path, t_list **files)
 		ft_memdel((void**)&file_tmp);
 		return ;
 	}
+	if ((file_tmp->stat->st_mode & S_IFMT) == S_IFLNK)
+		set_link_dest(file_tmp);
 	if (*files == NULL)
 		*files = ft_lstnew(file_tmp, sizeof(t_file));
 	else

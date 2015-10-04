@@ -26,6 +26,7 @@
 
 # define NAME(elem)				((t_file*)elem->content)->name
 # define PATH(elem)				((t_file*)elem->content)->path
+# define LINK_DEST(elem)		((t_file*)elem->content)->link_dest
 # define MODE(elem)				((t_file*)elem->content)->stat->st_mode
 # define LINK(elem)				((t_file*)elem->content)->stat->st_nlink
 # define UID(elem)				((t_file*)elem->content)->stat->st_uid
@@ -33,7 +34,7 @@
 # define RDEV(elem)				((t_file*)elem->content)->stat->st_rdev
 # define SIZE(elem)				((t_file*)elem->content)->stat->st_size
 # define TIME(elem)				((t_file*)elem->content)->stat->st_mtime
-# define BLKSIZE(elem)			((t_file*)elem->content)->stat->st_blksize
+# define BLOCK(elem)			((t_file*)elem->content)->stat->st_blocks
 # define NTIME(elem)			((t_file*)elem->content)->stat->st_mtim.tv_nsec
 # if UINTPTR_MAX == 0xffffffff
 #  define UTIME(elem)			TIME(elem)
@@ -67,6 +68,7 @@ typedef struct					s_file
 {
 	char						*name;
 	char						*path;
+	char						*link_dest;
 	t_stat						*stat;
 }								t_file;
 
@@ -92,12 +94,15 @@ t_list		*get_params(int ac, char **av);
 void		get_files(t_list *params, t_list **files);
 void		get_directories(t_list *params, t_list **directories);
 void		get_directory_content(t_list *dir, t_list **files, int options);
+void		print_directories(t_list *dir, int c, int options);
+void 		print_recursive(t_list *files, t_list *path, int c, int options);
 char		*set_file_path(char *name, char *path);
 void		set_file(char *name, char *path, t_list **files);
 void		sort(t_list *file, int options);
 void		print(t_list *file, int options);
 void		print_long(t_list *file);
 void		print_simple(t_list *file);
+void		print_total(t_list *files);
 void		print_mode(int octal);
 void 		print_link(t_list *file, t_padding *padding);
 void		print_user_group(t_list *file, t_padding *padding);
@@ -105,9 +110,11 @@ void 		print_size(t_list *file, t_padding *padding);
 void		print_date(t_list *file);
 void		print_name(t_list *file);
 void		print_link_dest(t_list *file);
-void		print_error(int err);
 void		padding(t_list *files, t_padding *padding);
+void		print_mem_error(int err);
+void		print_opendir_error(char *directory, int err);
 void		print_stat_error(char *filename, int err);
+void		print_link_error(char *link, int err);
 void		free_file(void *file, t_size size);
 int			strcmp_case_i(char *s1, char *s2);
 t_size		ft_nbrlen(int n);

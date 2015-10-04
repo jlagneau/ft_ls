@@ -22,7 +22,7 @@ static char		*get_hour(char *datetime)
 
 	hour = NULL;
 	if (!(hour = ft_strnew(6)))
-		print_error(errno);
+		print_mem_error(errno);
 	hour = ft_strncpy(hour, datetime, 5);
 	return (hour);
 }
@@ -38,7 +38,7 @@ static char		*get_hour_or_year(t_list *file, char **parsed_date)
 	if (rawtime - TIME(file) > six_months || TIME(file) - rawtime > six_months)
 	{
 		if (!(ret = ft_strnew(5)))
-			print_error(errno);
+			print_mem_error(errno);
 		ret = ft_strncpy(ret, parsed_date[4], 4);
 		ret[4] = ret[3];
 		ret[3] = ret[2];
@@ -59,10 +59,10 @@ static char		**get_parsed_date(t_list *file)
 	date = NULL;
 	parsed_date = NULL;
 	if (!(date = ft_strnew(ft_strlen(ctime(&TIME(file))))))
-		print_error(errno);
+		print_mem_error(errno);
 	date = ft_strcpy(date, ctime(&TIME(file)));
 	if (!(parsed_date = ft_strsplit(date, ' ')))
-		print_error(errno);
+		print_mem_error(errno);
 	ft_strdel(&date);
 	return (parsed_date);
 }

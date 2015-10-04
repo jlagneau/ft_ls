@@ -28,12 +28,12 @@ void			get_files(t_list *params, t_list **files)
 			if (*files == NULL)
 			{
 				if (!(*files = ft_lstnew(i->content, sizeof(t_file))))
-					print_error(errno);
+					print_mem_error(errno);
 			}
 			else
 			{
 				if (!(tmp = ft_lstnew(i->content, sizeof(t_file))))
-					print_error(errno);
+					print_mem_error(errno);
 				ft_lstadd(files, tmp);
 			}
 		}
