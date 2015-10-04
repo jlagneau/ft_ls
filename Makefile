@@ -29,7 +29,7 @@ OBJS_PATH = bin/
 SRCS_PATH = src/
 HEAD_PATH = include/
 
-CC        = clang
+CC        = gcc
 CFLAGS    = -I$(HEAD_PATH) -I$(LIB)$(HEAD_PATH) -Wall -Wextra -Werror
 LDFLAGS   = -L$(LIB)
 
@@ -39,7 +39,7 @@ ARFLAGS   = rcs
 RM        = rm
 RMFLAGS   = -rf
 
-# Sources files (find src -type f | tr "\n" " " to get the list).
+# Sources files
 SRCS      := $(shell find src -type f | tr "\n" " ")
 OBJS      = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=.o)))
 DEB_OBJS  = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=_debug.o)))
@@ -54,7 +54,7 @@ endif
 endif
 
 # Rules
-$(NAME): CFLAGS += -O3
+$(NAME): CFLAGS += -g3
 $(NAME): LDFLAGS += -lft
 $(NAME): $(OBJS)
 	make -C $(LIB)

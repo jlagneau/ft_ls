@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   print_simple.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/04 08:48:31 by jlagneau          #+#    #+#             */
-/*   Updated: 2015/10/04 08:48:32 by jlagneau         ###   ########.fr       */
+/*   Created: 2015/10/04 08:49:28 by jlagneau          #+#    #+#             */
+/*   Updated: 2015/10/04 08:49:29 by jlagneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
 #include <libft.h>
+#include "ft_ls.h"
 
-void	print_stat_error(char *filename, int err)
+void 		print_simple(t_list *files)
 {
-	ft_putstr_fd("ft_ls: cannot access ", 2);
-	ft_putstr_fd(filename, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(strerror(err), 2);
-}
+	t_list	*tmp;
 
-void	print_error(int err)
-{
-	ft_putstr_fd("ft_ls: ", 2);
-	ft_putendl_fd(strerror(err), 2);
-	exit(1);
+	tmp = files;
+	while (tmp)
+	{
+		print_name(tmp);
+		ft_putstr("  ");
+		tmp = tmp->next;
+	}
+	ft_putchar('\n');
 }

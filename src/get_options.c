@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_options.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/04 08:48:59 by jlagneau          #+#    #+#             */
+/*   Updated: 2015/10/04 08:48:59 by jlagneau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft.h>
 #include "ft_ls.h"
 
@@ -25,10 +37,6 @@ static int				set_options(char av, int options)
 	{
 		if (av == option_list[i].letter)
 		{
-			if (av == 'r' && options & TIME_OPTION_MASK)
-				options ^= TIME_OPTION_MASK;
-			else if (av == 't' && options & REVERSE_OPTION_MASK)
-				options ^= REVERSE_OPTION_MASK;
 			if (!(options & option_list[i].mask))
 				options ^= option_list[i].mask;
 		}

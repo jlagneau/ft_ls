@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_params.c                                       :+:      :+:    :+:   */
+/*   get_directories.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/04 08:48:01 by jlagneau          #+#    #+#             */
-/*   Updated: 2015/10/04 08:48:02 by jlagneau         ###   ########.fr       */
+/*   Created: 2015/10/04 08:48:26 by jlagneau          #+#    #+#             */
+/*   Updated: 2015/10/04 08:48:27 by jlagneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <errno.h>
 #include <libft.h>
 #include "ft_ls.h"
 
-t_list					*get_params(int ac, char **av)
+void			get_directories(t_list *params, t_list **directories)
 {
-	int					i;
-	t_bool				is_param;
-	t_list				*params;
+	t_list		*i;
+	t_list		*tmp;
 
-	i = 1;
-	params = NULL;
-	is_param = FALSE;
-
-	while (i < ac)
+	tmp = NULL;
+	i = params;
+	while (i)
 	{
-		if (!ft_strcmp(av[i], "--"))
+		if (IS_DIR(i))
 		{
-			i++;
-			is_param = TRUE;
-			continue ;
+			if (*directories == NULL)
+			{
+				if (!(*directories = ft_lstnew(i->content, sizeof(t_file))))
+					print_error(errno);
+			}
+			else
+			{
+				if (!(tmp = ft_lstnew(i->content, sizeof(t_file))))
+					print_error(errno);
+				ft_lstadd(directories, tmp);
+			}
 		}
-		if (av[i][0] != '-' || is_param == TRUE)
-			set_file(av[i], NULL, &params);
-		i++;
+		i = i->next;
 	}
-	if (!params)
-		set_file(".", NULL, &params);
-	return (params);
 }

@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_params.c                                       :+:      :+:    :+:   */
+/*   print_link_dest.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/04 08:48:01 by jlagneau          #+#    #+#             */
-/*   Updated: 2015/10/04 08:48:02 by jlagneau         ###   ########.fr       */
+/*   Created: 2015/10/04 08:49:19 by jlagneau          #+#    #+#             */
+/*   Updated: 2015/10/04 08:49:20 by jlagneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>
 #include <libft.h>
 #include "ft_ls.h"
 
-t_list					*get_params(int ac, char **av)
+void		print_link_dest(t_list *file)
 {
-	int					i;
-	t_bool				is_param;
-	t_list				*params;
+	char	*linkname;
+	char	*file_path;
+	int		r;
 
-	i = 1;
-	params = NULL;
-	is_param = FALSE;
-
-	while (i < ac)
+	linkname = NULL;
+	if (IS_LNK(file))
 	{
-		if (!ft_strcmp(av[i], "--"))
-		{
-			i++;
-			is_param = TRUE;
-			continue ;
-		}
-		if (av[i][0] != '-' || is_param == TRUE)
-			set_file(av[i], NULL, &params);
-		i++;
+		if (!(linkname = ft_strnew(SIZE(file))))
+			print_error(errno);
+		file_path = set_file_path(NAME(file), PATH(file));
+		if ((r = readlink(file_path, linkname, SIZE(file) + 1)) == -1)
+			print_error(errno);
+		ft_strdel(&file_path);
+		linkname[r] = '\0';
+		ft_putstr(" -> ");
+		ft_putstr(linkname);
 	}
-	if (!params)
-		set_file(".", NULL, &params);
-	return (params);
 }
