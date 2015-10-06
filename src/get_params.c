@@ -23,7 +23,6 @@ t_list					*get_params(int ac, char **av)
 	i = 1;
 	params = NULL;
 	is_param = FALSE;
-
 	while (i < ac)
 	{
 		if (!ft_strcmp(av[i], "--"))

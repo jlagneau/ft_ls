@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <libft.h>
 #include "ft_ls.h"
+
 static void		add_path(t_list *dir, t_list *path)
 {
 	t_list		*i;

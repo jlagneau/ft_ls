@@ -13,7 +13,7 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-void 		print(t_list *files, int options)
+void		print(t_list *files, int options)
 {
 	if (options & LONG_OPTION_MASK)
 		print_long(files);

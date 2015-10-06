@@ -47,7 +47,7 @@ static void				set_path(char *filename, char *path, t_file *file_tmp)
 	}
 }
 
-static int 				set_stat(t_file *file)
+static int				set_stat(t_file *file)
 {
 	char				*tmp;
 	t_stat				*stat;

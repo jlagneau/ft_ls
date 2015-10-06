@@ -13,7 +13,7 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-void 		print_link(t_list *file, t_padding *padding)
+void		print_link(t_list *file, t_padding *padding)
 {
 	t_size		pad;
 

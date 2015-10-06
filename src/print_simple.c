@@ -13,7 +13,7 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-void 		print_simple(t_list *files)
+void		print_simple(t_list *files)
 {
 	t_list	*tmp;
 

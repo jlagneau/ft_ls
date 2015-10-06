@@ -16,13 +16,14 @@
 static t_options		*get_options_list(void)
 {
 	static t_options	opt[6] = {
-		{ LONG_OPTION_MASK,      'l' },
+		{ LONG_OPTION_MASK, 'l' },
 		{ RECURSIVE_OPTION_MASK, 'R' },
-		{ ALL_OPTION_MASK,       'a' },
-		{ REVERSE_OPTION_MASK,   'r' },
-		{ TIME_OPTION_MASK,      't' },
-		{ 0,                    '\0' }
+		{ ALL_OPTION_MASK, 'a' },
+		{ REVERSE_OPTION_MASK, 'r' },
+		{ TIME_OPTION_MASK, 't' },
+		{ 0, '\0' }
 	};
+
 	return (opt);
 }
 

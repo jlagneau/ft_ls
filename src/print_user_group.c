@@ -17,20 +17,20 @@
 void		print_user_group(t_list *file, t_padding *padding)
 {
 	t_size	pad;
-	t_pw	*pPassword;
-	t_grp	*pGroup;
+	t_pw	*ppassword;
+	t_grp	*pgroup;
 
-	pPassword = NULL;
-	pPassword = getpwuid(UID(file));
-	ft_putstr(pPassword->pw_name);
-	pad = padding->user - ft_strlen(pPassword->pw_name);
+	ppassword = NULL;
+	ppassword = getpwuid(UID(file));
+	ft_putstr(ppassword->pw_name);
+	pad = padding->user - ft_strlen(ppassword->pw_name);
 	while (pad--)
 		ft_putchar(' ');
 	ft_putchar(' ');
-	pGroup = NULL;
-	pGroup = getgrgid(GID(file));
-	ft_putstr(pGroup->gr_name);
-	pad = padding->group - ft_strlen(pGroup->gr_name);
+	pgroup = NULL;
+	pgroup = getgrgid(GID(file));
+	ft_putstr(pgroup->gr_name);
+	pad = padding->group - ft_strlen(pgroup->gr_name);
 	while (pad--)
 		ft_putchar(' ');
 	ft_putchar(' ');

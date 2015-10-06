@@ -67,7 +67,7 @@ static char		**get_parsed_date(t_list *file)
 	return (parsed_date);
 }
 
-static void 	free_parsed_date(char **parsed_date)
+static void		free_parsed_date(char **parsed_date)
 {
 	int			i;
 

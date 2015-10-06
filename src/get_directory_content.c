@@ -26,26 +26,26 @@ static void		is_hidden(char *name, t_list **file, char *path, int options)
 
 void			get_directory_content(t_list *dir, t_list **files, int options)
 {
-	DIR			*pDir;
-	t_dir		*pDirent;
+	DIR			*pdir;
+	t_dir		*pdirent;
 	char		*tmp;
 
-	pDir = NULL;
-	pDirent = NULL;
+	pdir = NULL;
+	pdirent = NULL;
 	if (!(tmp = set_file_path(NAME(dir), PATH(dir))))
 		print_mem_error(errno);
-	if ((pDir = opendir(tmp)))
+	if ((pdir = opendir(tmp)))
 	{
-		while ((pDirent = readdir(pDir)))
+		while ((pdirent = readdir(pdir)))
 		{
-			if (pDirent)
-				is_hidden(pDirent->d_name, files, tmp, options);
+			if (pdirent)
+				is_hidden(pdirent->d_name, files, tmp, options);
 			else
 				print_mem_error(errno);
 		}
 		ft_strdel(&tmp);
 		sort(*files, options);
-		closedir(pDir);
+		closedir(pdir);
 	}
 	else
 		print_opendir_error(tmp, errno);

@@ -13,7 +13,7 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-static void 		swap(t_list *file1, t_list *file2)
+static void			swap(t_list *file1, t_list *file2)
 {
 	t_file			*tmp;
 
@@ -24,8 +24,8 @@ static void 		swap(t_list *file1, t_list *file2)
 
 static void			sort_time(t_list *file, int options)
 {
-	t_list		*tmp;
-	t_size		size;
+	t_list			*tmp;
+	t_size			size;
 
 	size = ft_lstlen(file);
 	size++;
@@ -49,10 +49,10 @@ static void			sort_time(t_list *file, int options)
 	}
 }
 
-static void 		sort_name(t_list *file, int options)
+static void			sort_name(t_list *file, int options)
 {
-	t_list		*tmp;
-	t_size		size;
+	t_list			*tmp;
+	t_size			size;
 
 	size = ft_lstlen(file);
 	size++;
@@ -76,7 +76,7 @@ static void 		sort_name(t_list *file, int options)
 	}
 }
 
-void 				sort(t_list *file, int options)
+void				sort(t_list *file, int options)
 {
 	if (!file || !file->next)
 		return ;

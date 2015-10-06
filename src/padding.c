@@ -33,15 +33,15 @@ static t_size	max_user_len(t_list *files)
 {
 	t_list		*tmp;
 	t_size		padding;
-	t_pw		*pPassword;
+	t_pw		*ppassword;
 
 	tmp = files;
 	padding = 0;
 	while (tmp)
 	{
-		pPassword = getpwuid(UID(tmp));
-		if (padding < ft_strlen(pPassword->pw_name))
-			padding = ft_strlen(pPassword->pw_name);
+		ppassword = getpwuid(UID(tmp));
+		if (padding < ft_strlen(ppassword->pw_name))
+			padding = ft_strlen(ppassword->pw_name);
 		tmp = tmp->next;
 	}
 	return (padding);
@@ -51,15 +51,15 @@ static t_size	max_group_len(t_list *files)
 {
 	t_list		*tmp;
 	t_size		padding;
-	t_grp		*pGroup;
+	t_grp		*pgroup;
 
 	tmp = files;
 	padding = 0;
 	while (tmp)
 	{
-		pGroup = getgrgid(GID(tmp));
-		if (padding < ft_strlen(pGroup->gr_name))
-			padding = ft_strlen(pGroup->gr_name);
+		pgroup = getgrgid(GID(tmp));
+		if (padding < ft_strlen(pgroup->gr_name))
+			padding = ft_strlen(pgroup->gr_name);
 		tmp = tmp->next;
 	}
 	return (padding);
