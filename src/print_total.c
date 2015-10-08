@@ -26,6 +26,6 @@ void		print_total(t_list *files)
 		i = i->next;
 	}
 	ft_putstr("total ");
-	ft_putnbr(total / 2);
+	ft_putnbr(total);
 	ft_putchar('\n');
 }

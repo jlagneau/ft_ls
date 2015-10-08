@@ -22,6 +22,7 @@ static void		print_params(t_list *params, int options)
 	int			i;
 
 	files = NULL;
+	i = 0;
 	get_files(params, &files);
 	if (files)
 	{

@@ -36,10 +36,6 @@
 # define SIZE(elem)				STAT(elem)->st_size
 # define TIME(elem)				STAT(elem)->st_mtime
 # define BLOCK(elem)			STAT(elem)->st_blocks
-# define NTIME(elem)			STAT(elem)->st_mtimespec.tv_nsec
-# define UTIME(elem)			TIME(elem) * 1000 + NTIME(elem) / 1000000
-# define MINOR(elem)			((elem) & 0xFF)
-# define MAJOR(elem)			((elem) >> 8)
 # define FILE_TYPE(elem)		(MODE(elem) & S_IFMT)
 # define IS_BLK(elem)			FILE_TYPE(elem) == S_IFBLK
 # define IS_CHR(elem)			FILE_TYPE(elem) == S_IFCHR
@@ -48,6 +44,7 @@
 # define IS_LNK(elem)			FILE_TYPE(elem) == S_IFLNK
 # define IS_REG(elem)			FILE_TYPE(elem) == S_IFREG
 # define IS_SOCK(elem)			FILE_TYPE(elem) == S_IFSOCK
+# define IS_DOT_FILE(str)		!(!ft_strcmp(str,".")||!ft_strcmp(str,".."))
 
 typedef struct dirent			t_dir;
 typedef struct stat				t_stat;

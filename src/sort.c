@@ -36,12 +36,12 @@ static void			sort_time(t_list *file, int options)
 		{
 			if (options & REVERSE_OPTION_MASK)
 			{
-				if (UTIME(tmp) > UTIME(tmp->next))
+				if (TIME(tmp) > TIME(tmp->next))
 					swap(tmp, tmp->next);
 			}
 			else
 			{
-				if (UTIME(tmp) < UTIME(tmp->next))
+				if (TIME(tmp) < TIME(tmp->next))
 					swap(tmp, tmp->next);
 			}
 			tmp = tmp->next;

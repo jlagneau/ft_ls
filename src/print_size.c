@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <sys/types.h>
 #include "ft_ls.h"
 
 void		print_size(t_list *file, t_padding *padding)
@@ -19,15 +20,15 @@ void		print_size(t_list *file, t_padding *padding)
 
 	if (IS_CHR(file) || IS_BLK(file))
 	{
-		pad = padding->major - ft_nbrlen(MAJOR(RDEV(file)));
+		pad = padding->major - ft_nbrlen(major(RDEV(file)));
 		while (pad--)
 			ft_putchar(' ');
-		ft_putnbr(MAJOR(RDEV(file)));
+		ft_putnbr(major(RDEV(file)));
 		ft_putstr(", ");
-		pad = padding->minor - ft_nbrlen(MINOR(RDEV(file)));
+		pad = padding->minor - ft_nbrlen(minor(RDEV(file)));
 		while (pad--)
 			ft_putchar(' ');
-		ft_putnbr(MINOR(RDEV(file)));
+		ft_putnbr(minor(RDEV(file)));
 	}
 	else
 	{

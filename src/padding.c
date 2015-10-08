@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/types.h>
 #include <libft.h>
 #include "ft_ls.h"
 
@@ -77,10 +78,10 @@ static void		max_size_len(t_list *files, t_padding *padding)
 	{
 		if (IS_CHR(tmp) || IS_BLK(tmp))
 		{
-			if (padding->minor < ft_nbrlen(MINOR(RDEV(tmp))))
-				padding->minor = ft_nbrlen(MINOR(RDEV(tmp)));
-			if (padding->major < ft_nbrlen(MAJOR(RDEV(tmp))))
-				padding->major = ft_nbrlen(MAJOR(RDEV(tmp)));
+			if (padding->minor < ft_nbrlen(minor(RDEV(tmp))))
+				padding->minor = ft_nbrlen(minor(RDEV(tmp)));
+			if (padding->major < ft_nbrlen(major(RDEV(tmp))))
+				padding->major = ft_nbrlen(major(RDEV(tmp)));
 			padding->size = padding->minor + padding->major + 2;
 		}
 		if (padding->size < ft_nbrlen(SIZE(tmp)))

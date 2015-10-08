@@ -71,9 +71,8 @@ static void				set_name(char *filename, t_file *file_tmp)
 	char				*tmp;
 
 	tmp = NULL;
-	if (!(tmp = ft_strnew(ft_strlen(filename))))
+	if (!(tmp = ft_strdup(filename)))
 		print_mem_error(errno);
-	ft_strcpy(tmp, filename);
 	file_tmp->name = tmp;
 }
 

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include "ft_ls.h"
 
 static char			custom_tolower(char c)
 {
@@ -45,12 +46,12 @@ int					strcmp_case_i(char *s1, char *s2)
 	tmp1 = tmps1;
 	tmp2 = tmps2;
 	while (tmp1)
-		if (tmp1[0] == '.')
+		if (tmp1[0] == '.' && IS_DOT_FILE(tmp1))
 			tmp1++;
 		else
 			break ;
 	while (tmp2)
-		if (tmp2[0] == '.')
+		if (tmp2[0] == '.' && IS_DOT_FILE(tmp2))
 			tmp2++;
 		else
 			break ;
