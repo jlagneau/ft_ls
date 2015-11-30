@@ -16,7 +16,7 @@
 #include <libft.h>
 #include "ft_ls.h"
 
-static void		is_hidden(char *name, t_list **file, char *path, int options)
+static void		add_file(char *name, t_list **file, char *path, int options)
 {
 	if (name[0] == '.' && options & ALL_OPTION_MASK)
 		set_file(name, path, file);
@@ -39,14 +39,14 @@ void			get_directory_content(t_list *dir, t_list **files, int options)
 		while ((pdirent = readdir(pdir)))
 		{
 			if (pdirent)
-				is_hidden(pdirent->d_name, files, tmp, options);
+				add_file(pdirent->d_name, files, tmp, options);
 			else
 				print_mem_error(errno);
 		}
-		ft_strdel(&tmp);
-		sort(*files, options);
 		closedir(pdir);
 	}
 	else
 		print_opendir_error(tmp, errno);
+	ft_strdel(&tmp);
+	sort(*files, options);
 }

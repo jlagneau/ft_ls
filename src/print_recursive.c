@@ -68,5 +68,4 @@ void			print_recursive(t_list *files, t_list *path, int c, int options)
 	sort(dir, options);
 	if (dir)
 		print_directories(dir, c, options);
-	ft_lstdel(&dir, &free_file);
 }

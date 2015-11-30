@@ -40,17 +40,19 @@ void			print_directories(t_list *dir, int c, int options)
 	t_list		*i;
 	t_list		*content;
 
-	content = NULL;
 	i = dir;
 	while (i)
 	{
+		content = NULL;
 		get_directory_content(i, &content, options);
 		sort(content, options);
-		if (c > 1)
+		if (c > 1 || options & RECURSIVE_OPTION_MASK)
 			print_directory_name(i, &c);
 		if (options & LONG_OPTION_MASK)
 			print_total(content);
 		print(content, options);
+		if (options & RECURSIVE_OPTION_MASK)
+			print_recursive(content, i, c, options);
 		ft_lstdel(&content, &free_file);
 		i = i->next;
 	}

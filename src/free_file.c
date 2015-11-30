@@ -20,8 +20,6 @@ void		free_file(void *file, t_size size)
 	f = file;
 	if (f->name)
 		ft_strdel(&(f->name));
-	if (f->path)
-		ft_strdel(&(f->path));
 	if (f->link_dest)
 		ft_strdel(&(f->link_dest));
 	ft_memdel((void**)&(f->stat));

@@ -63,12 +63,12 @@ static void			sort_name(t_list *file, int options)
 		{
 			if (options & REVERSE_OPTION_MASK)
 			{
-				if (strcmp_case_i(NAME(tmp), NAME(tmp->next)) < 0)
+				if (ft_strcmp(NAME(tmp), NAME(tmp->next)) < 0)
 					swap(tmp, tmp->next);
 			}
 			else
 			{
-				if (strcmp_case_i(NAME(tmp), NAME(tmp->next)) > 0)
+				if (ft_strcmp(NAME(tmp), NAME(tmp->next)) > 0)
 					swap(tmp, tmp->next);
 			}
 			tmp = tmp->next;
