@@ -1,3 +1,4 @@
-bin
+.obj/
+.dep/
 ft_ls
-debug_ft_ls
+debug

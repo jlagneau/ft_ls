@@ -6,119 +6,105 @@
 #    By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/21 08:29:58 by jlagneau          #+#    #+#              #
-#    Updated: 2014/11/15 00:54:25 by jlagneau         ###   ########.fr        #
+#    Updated: 2015/12/02 10:36:58 by jlagneau         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 # Variables
 NAME      = ft_ls
-DEB_NAME  = debug_ft_ls
 
+# Information variables
 ISGIT     := $(shell find . -name ".git" -type d)
 HASTAGS   := $(shell git tag)
 ifneq (, $(strip $(ISGIT)))
 ifneq (, $(strip $(HASTAGS)))
-	VER   := $(shell git describe --tags `git rev-list --tags --max-count=1`)
+VER      := $(shell git describe --tags `git rev-list --tags --max-count=1`)
+else
+VER      := $(shell git rev-parse --short HEAD)
 endif
-	GDATE := $(shell git show -s --format="%ci" HEAD)
+GDATE    := $(shell git show -s --format="%ci" HEAD)
 endif
 
+# Directories
 LIB       = libft/
 
-OBJS_PATH = bin/
 SRCS_PATH = src/
 HEAD_PATH = include/
 
+OBJS_PATH = .obj/
+DEPS_PATH = .dep/
+
+# Exec
 CC        = gcc
-CFLAGS    = -I$(HEAD_PATH) -I$(LIB)$(HEAD_PATH) -Wall -Wextra -Werror
-LDFLAGS   = -L$(LIB)
-
-AR        = ar
-ARFLAGS   = rcs
-
 RM        = rm
+
+# Flags
+IFLAGS    = -I$(HEAD_PATH) -I$(LIB)$(HEAD_PATH)
+CFLAGS    = -Wall -Wextra -Werror -pedantic
+LDFLAGS   = -L$(LIB)
+DEPSFLAGS = -MMD -MF"$(DEPS_PATH)$(notdir $(@:.o=.d))"
 RMFLAGS   = -rf
 
-# Sources files
-SRCS      = src/print_link_dest.c src/padding.c src/error.c src/print_link.c \
-			src/get_options.c src/get_files.c src/get_directories.c \
-			src/get_directory_content.c src/print_size.c src/print_mode.c \
-			src/print_total.c src/main.c src/print_date.c src/set_file_path.c \
-			src/free_file.c src/print_simple.c src/print_user_group.c \
-			src/print_long.c src/init.c src/sort.c src/print_recursive.c \
-			src/custom.c src/print_directories.c src/set_file.c src/print.c \
-			src/get_params.c src/print_name.c
+# Files
+SRCS     := $(shell find src -type f)
+DEPS      = $(addprefix $(DEPS_PATH), $(notdir $(SRCS:.c=.d)))
 OBJS      = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=.o)))
-DEB_OBJS  = $(addprefix $(OBJS_PATH), $(notdir $(SRCS:.c=_debug.o)))
+DEB_OBJS  = $(OBJS:.o=_debug.o)
+DEB_DEPS  = $(DEB_OBJS:.o=.d)
 
-# Print informations about the library
+# Print informations about the project
 $(info :: Project: $(NAME))
 ifneq (, $(strip $(ISGIT)))
-ifneq (, $(strip $(HASTAGS)))
     $(info :: Version : $(VER))
-endif
     $(info :: Last modifications : $(GDATE))
 endif
 
 # Rules
-$(NAME): CFLAGS += -g3
+$(NAME): CFLAGS += -O3
 $(NAME): LDFLAGS += -lft
 $(NAME): $(OBJS)
-	make -C $(LIB)
-	printf "[\033[36m%20s\033[0m] Linking and indexing" $(NAME)
+	@make -C $(LIB)
 	$(CC) $^ $(LDFLAGS) -o $@
-	printf " [\033[32mDONE\033[0m]\n"
-
-$(DEB_NAME): $(DEB_OBJS)
-	make -C $(LIB) debug
-	printf "[\033[36m%20s\033[0m] Linking and indexing" $(DEB_NAME)
-	$(CC) $^ $(LDFLAGS) -o $@
-	printf " [\033[32mDONE\033[0m]\n"
-
-$(OBJS_PATH)%.o: $(SRCS_PATH)%.c
-	if [ ! -d $(OBJS_PATH) ]; then \
-	mkdir -p $(OBJS_PATH); \
-	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
-	printf "    [\033[32mDONE\033[0m]\n"; \
-	fi;
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJS_PATH)%_debug.o: $(SRCS_PATH)%.c
-	if [ ! -d $(OBJS_PATH) ]; then \
-	mkdir -p $(OBJS_PATH); \
-	printf "[\033[36m%20s\033[0m] Compiling objects" $(NAME); \
-	printf "    [\033[32mDONE\033[0m]\n"; \
-	fi;
-	$(CC) $(CFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g3
 debug: LDFLAGS += -lft_debug
-debug: $(DEB_NAME)
+debug: $(DEB_OBJS)
+	@make -C $(LIB) debug
+	$(CC) $^ $(LDFLAGS) -o $@
 
-redebug: fclean debug
+$(OBJS_PATH)%.o: $(SRCS_PATH)%.c
+	@if [ ! -d $(OBJS_PATH) ]; then \
+	mkdir -p $(OBJS_PATH); \
+	mkdir -p $(DEPS_PATH); \
+	fi;
+	$(CC) $(IFLAGS) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
+
+$(OBJS_PATH)%_debug.o: $(SRCS_PATH)%.c
+	@if [ ! -d $(OBJS_PATH) ]; then \
+	mkdir -p $(OBJS_PATH); \
+	mkdir -p $(DEPS_PATH); \
+	fi;
+	$(CC) $(IFLAGS) $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
 
 norme:
-	norminette ./**/*.{h,c}
+	@norminette ./**/*.{h,c}
 
 all: $(NAME)
 
 clean:
-	printf "[\033[36m%20s\033[0m] Removing objects" $(NAME)
-	$(RM) $(RMFLAGS) $(OBJS_PATH)
-	printf "     [\033[32mDONE\033[0m]\n"
-	make -C $(LIB) clean
+	$(RM) $(RMFLAGS) $(OBJS_PATH) $(DEPS_PATH)
+	@make -C $(LIB) clean
 
 fclean:
-	printf "[\033[36m%20s\033[0m] Removing objects" $(NAME)
-	$(RM) $(RMFLAGS) $(OBJS_PATH)
-	printf "     [\033[32mDONE\033[0m]\n"
-	printf "[\033[36m%20s\033[0m] Removing binary" $(NAME)
+	$(RM) $(RMFLAGS) $(OBJS_PATH) $(DEPS_PATH)
 	$(RM) $(RMFLAGS) $(NAME) $(DEB_NAME)
-	printf "      [\033[32mDONE\033[0m]\n"
-	make -C $(LIB) fclean
+	@make -C $(LIB) fclean
 
 re: fclean all
 
-.PHONY: all clean debug fclean lib lib_debug norme re redebug
+redebug: fclean debug
 
-.SILENT:
+-include $(DEPS)
+-include $(DEB_DEPS)
+
+.PHONY: all clean fclean norme re redebug
